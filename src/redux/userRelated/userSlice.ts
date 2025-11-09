@@ -41,4 +41,8 @@ const userSlice = createSlice({
 });
 
 export const { authLogout, loginSuccess, loginFailed, loginError } = userSlice.actions;
+
+// Additional action for compatibility
+export const underControl = () => ({ type: 'user/underControl' });
+
 export default userSlice.reducer;

@@ -7,6 +7,12 @@ import AdminProfile from './AdminProfile';
 import ShowClasses from './classRelated/ShowClasses';
 import AddClass from './classRelated/AddClass';
 import ClassDetails from './classRelated/ClassDetails';
+import ShowSubjects from './subjectRelated/ShowSubjects';
+import ViewSubject from './subjectRelated/ViewSubject';
+import ShowStudents from './studentRelated/ShowStudents';
+import ShowNotices from './noticeRelated/ShowNotices';
+import AddNotice from './noticeRelated/AddNotice';
+import SeeComplains from './complainRelated/SeeComplains';
 
 const AdminDashboard = () => {
   const { currentUser } = useSelector((state: any) => state.user);
@@ -48,12 +54,22 @@ const AdminDashboard = () => {
               <Route path="/classes/add" element={<AddClass />} />
               <Route path="/classes/class/:id" element={<ClassDetails />} />
               
+              {/* Subject Routes */}
+              <Route path="/subjects" element={<ShowSubjects />} />
+              <Route path="/subjects/subject/:classID/:subjectID" element={<ViewSubject />} />
+              
+              {/* Student Routes */}
+              <Route path="/students" element={<ShowStudents />} />
+              
+              {/* Notice Routes */}
+              <Route path="/notices" element={<ShowNotices />} />
+              <Route path="/addnotice" element={<AddNotice />} />
+              
+              {/* Complain Routes */}
+              <Route path="/complains" element={<SeeComplains />} />
+              
               {/* Placeholder routes for other sections */}
-              <Route path="/subjects" element={<div className="text-center py-12"><h2 className="text-2xl font-semibold">Subjects - Coming Soon</h2></div>} />
               <Route path="/teachers" element={<div className="text-center py-12"><h2 className="text-2xl font-semibold">Teachers - Coming Soon</h2></div>} />
-              <Route path="/students" element={<div className="text-center py-12"><h2 className="text-2xl font-semibold">Students - Coming Soon</h2></div>} />
-              <Route path="/notices" element={<div className="text-center py-12"><h2 className="text-2xl font-semibold">Notices - Coming Soon</h2></div>} />
-              <Route path="/complains" element={<div className="text-center py-12"><h2 className="text-2xl font-semibold">Complains - Coming Soon</h2></div>} />
             </Routes>
           </div>
         </main>
