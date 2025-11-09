@@ -20,3 +20,8 @@ export const getAllSclasses = (adminID: string, type: string) => async (dispatch
   // TODO: Implement actual API call
   console.log('getAllSclasses', adminID, type);
 };
+
+export const getTeacherFreeClassSubjects = (classID: string) => async (dispatch: any) => {
+  // TODO: Implement actual API call
+  console.log('getTeacherFreeClassSubjects', classID);
+};

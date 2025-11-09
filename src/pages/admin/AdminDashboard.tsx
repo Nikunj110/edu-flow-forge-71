@@ -13,6 +13,10 @@ import ShowStudents from './studentRelated/ShowStudents';
 import ShowNotices from './noticeRelated/ShowNotices';
 import AddNotice from './noticeRelated/AddNotice';
 import SeeComplains from './complainRelated/SeeComplains';
+import ShowTeachers from './teacherRelated/ShowTeachers';
+import AddTeacher from './teacherRelated/AddTeacher';
+import ChooseClass from './teacherRelated/ChooseClass';
+import TeacherDetails from './teacherRelated/TeacherDetails';
 
 const AdminDashboard = () => {
   const { currentUser } = useSelector((state: any) => state.user);
@@ -68,8 +72,11 @@ const AdminDashboard = () => {
               {/* Complain Routes */}
               <Route path="/complains" element={<SeeComplains />} />
               
-              {/* Placeholder routes for other sections */}
-              <Route path="/teachers" element={<div className="text-center py-12"><h2 className="text-2xl font-semibold">Teachers - Coming Soon</h2></div>} />
+              {/* Teacher Routes */}
+              <Route path="/teachers" element={<ShowTeachers />} />
+              <Route path="/teachers/chooseclass" element={<ChooseClass situation="Teacher" />} />
+              <Route path="/teachers/addteacher/:id" element={<AddTeacher />} />
+              <Route path="/teachers/teacher/:id" element={<TeacherDetails />} />
             </Routes>
           </div>
         </main>
