@@ -9,10 +9,10 @@ const AdminHomePage = () => {
 
   // Placeholder data - replace with actual Redux calls
   const stats = [
-    { title: 'Total Students', value: 150, icon: Users, color: 'primary', trend: '+12%' },
-    { title: 'Total Classes', value: 12, icon: BookOpen, color: 'secondary', trend: '+2' },
-    { title: 'Total Teachers', value: 24, icon: GraduationCap, color: 'accent', trend: '+5' },
-    { title: 'Total Revenue', value: '$45,231', icon: DollarSign, color: 'primary', trend: '+8%' },
+    { title: 'Total Students', value: 150, icon: Users, bgColor: 'bg-primary/10', iconColor: 'text-primary', trend: '+12%' },
+    { title: 'Total Classes', value: 12, icon: BookOpen, bgColor: 'bg-secondary/10', iconColor: 'text-secondary', trend: '+2' },
+    { title: 'Total Teachers', value: 24, icon: GraduationCap, bgColor: 'bg-accent/10', iconColor: 'text-accent', trend: '+5' },
+    { title: 'Total Revenue', value: '$45,231', icon: DollarSign, bgColor: 'bg-primary/10', iconColor: 'text-primary', trend: '+8%' },
   ];
 
   const recentActivities = [
@@ -45,8 +45,8 @@ const AdminHomePage = () => {
             >
               <CardContent className="p-6">
                 <div className="flex items-center justify-between mb-4">
-                  <div className={`w-12 h-12 rounded-xl bg-${stat.color}/10 flex items-center justify-center`}>
-                    <Icon className={`w-6 h-6 text-${stat.color}`} />
+                  <div className={`w-12 h-12 rounded-xl ${stat.bgColor} flex items-center justify-center`}>
+                    <Icon className={`w-6 h-6 ${stat.iconColor}`} />
                   </div>
                   <span className="text-sm font-medium text-secondary flex items-center gap-1">
                     <TrendingUp className="w-4 h-4" />
