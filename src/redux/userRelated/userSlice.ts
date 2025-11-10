@@ -6,6 +6,8 @@ interface UserState {
   currentRole: string;
   response: string;
   error: string;
+  userDetails: any;
+  loading: boolean;
 }
 
 const initialState: UserState = {
@@ -14,6 +16,8 @@ const initialState: UserState = {
   currentRole: '',
   response: '',
   error: '',
+  userDetails: null,
+  loading: false,
 };
 
 const userSlice = createSlice({
