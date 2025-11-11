@@ -56,6 +56,7 @@ const AdminDashboard = () => {
               {/* Class Routes */}
               <Route path="/classes" element={<ShowClasses />} />
               <Route path="/classes/add" element={<AddClass />} />
+              <Route path="/addclass" element={<AddClass />} />
               <Route path="/classes/class/:id" element={<ClassDetails />} />
               
               {/* Subject Routes */}
