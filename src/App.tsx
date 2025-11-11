@@ -14,6 +14,7 @@ import Logout from "./pages/Logout";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminRegisterPage from "./pages/AdminRegisterPage";
 import StudentDashboard from "./pages/student/StudentDashboard";
+import TeacherDashboard from "./pages/teacher/TeacherDashboard";
 
 const queryClient = new QueryClient();
 
@@ -35,6 +36,7 @@ const App = () => (
             <Route path="/logout" element={<Logout />} />
             <Route path="/Admin/*" element={<AdminDashboard />} />
             <Route path="/Student/*" element={<StudentDashboard />} />
+            <Route path="/Teacher/*" element={<TeacherDashboard />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
