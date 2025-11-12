@@ -1,57 +1,109 @@
-import { loginSuccess, loginFailed, loginError } from './userSlice';
+import axios from 'axios';
+import {
+  authRequest,
+  stuffAdded,
+  authSuccess,
+  authFailed,
+  authError,
+  authLogout,
+  doneSuccess,
+  getDeleteSuccess,
+  getRequest,
+  getFailed,
+  getError,
+} from './userSlice';
 
-// Placeholder for Redux user handling
-// Replace this with your actual backend API calls
-export const loginUser = (fields: any, role: string) => {
-  return async (dispatch: any) => {
-    try {
-      // Simulate API call - replace with your actual API endpoint
-      console.log('Login attempt:', { fields, role });
-      
-      // For demo purposes - replace with actual API call
-      // const response = await fetch('/api/login', {
-      //   method: 'POST',
-      //   body: JSON.stringify({ ...fields, role }),
-      // });
-      // const data = await response.json();
-      
-      // Simulate successful login for guest mode
-      if (fields.password === 'zxc') {
-        dispatch(loginSuccess({
-          user: { name: fields.email || fields.studentName, ...fields },
-          role: role
-        }));
-      } else {
-        dispatch(loginFailed('Invalid credentials'));
-      }
-    } catch (error) {
-      dispatch(loginError());
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+
+export const loginUser = (fields: any, role: string) => async (dispatch: any) => {
+  dispatch(authRequest());
+
+  try {
+    const result = await axios.post(`${API_BASE_URL}/${role}Login`, fields, {
+      headers: { 'Content-Type': 'application/json' },
+    });
+    if (result.data.role) {
+      dispatch(authSuccess(result.data));
+    } else {
+      dispatch(authFailed(result.data.message));
     }
-  };
+  } catch (error) {
+    dispatch(authError(error));
+  }
 };
 
-// Placeholder for additional user-related actions
 export const registerUser = (fields: any, role: string) => async (dispatch: any) => {
-  // TODO: Implement actual API call
-  console.log('registerUser', fields, role);
+  dispatch(authRequest());
+
+  try {
+    const result = await axios.post(`${API_BASE_URL}/${role}Reg`, fields, {
+      headers: { 'Content-Type': 'application/json' },
+    });
+    if (result.data.schoolName) {
+      dispatch(authSuccess(result.data));
+    } else if (result.data.school) {
+      dispatch(stuffAdded(result.data));
+    } else {
+      dispatch(authFailed(result.data.message));
+    }
+  } catch (error) {
+    dispatch(authError(error));
+  }
 };
 
-export const deleteUser = (deleteID: string, address: string) => async (dispatch: any) => {
-  // TODO: Implement actual API call
-  console.log('deleteUser', deleteID, address);
+export const logoutUser = () => (dispatch: any) => {
+  dispatch(authLogout());
+};
+
+export const getUserDetails = (id: string, address: string) => async (dispatch: any) => {
+  dispatch(getRequest());
+
+  try {
+    const result = await axios.get(`${API_BASE_URL}/${address}/${id}`);
+    if (result.data) {
+      dispatch(doneSuccess(result.data));
+    }
+  } catch (error) {
+    dispatch(getError(error));
+  }
+};
+
+export const deleteUser = (id: string, address: string) => async (dispatch: any) => {
+  dispatch(getRequest());
+  dispatch(getFailed("Sorry the delete function has been disabled for now."));
+};
+
+export const updateUser = (fields: any, id: string, address: string) => async (dispatch: any) => {
+  dispatch(getRequest());
+
+  try {
+    const result = await axios.put(`${API_BASE_URL}/${address}/${id}`, fields, {
+      headers: { 'Content-Type': 'application/json' },
+    });
+    if (result.data.schoolName) {
+      dispatch(authSuccess(result.data));
+    } else {
+      dispatch(doneSuccess(result.data));
+    }
+  } catch (error) {
+    dispatch(getError(error));
+  }
 };
 
 export const addStuff = (fields: any, address: string) => async (dispatch: any) => {
-  // TODO: Implement actual API call
-  console.log('addStuff', fields, address);
-};
+  dispatch(authRequest());
 
-export const getUserDetails = (userID: string, address: string) => async (dispatch: any) => {
-  // TODO: Implement actual API call
-  console.log('getUserDetails', userID, address);
-};
+  try {
+    const result = await axios.post(`${API_BASE_URL}/${address}Create`, fields, {
+      headers: { 'Content-Type': 'application/json' },
+    });
 
-export const updateUser = (userID: string, fields: any, address: string) => async (dispatch: any) => {
-  // TODO: Implement actual API call
-  console.log('updateUser', userID, fields, address);
+    if (result.data.message) {
+      dispatch(authFailed(result.data.message));
+    } else {
+      dispatch(stuffAdded(result.data));
+    }
+  } catch (error) {
+    dispatch(authError(error));
+  }
 };
