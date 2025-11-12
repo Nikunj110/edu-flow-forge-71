@@ -45,8 +45,8 @@ const TeacherProfile = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="flex items-start gap-3">
-              <div className="p-2 rounded-lg bg-blue-100 dark:bg-blue-950">
-                <Mail className="h-5 w-5 text-blue-600" />
+              <div className="p-2 rounded-lg bg-primary/10">
+                <Mail className="h-5 w-5 text-primary" />
               </div>
               <div>
                 <p className="text-sm text-muted-foreground">Email Address</p>
@@ -55,8 +55,8 @@ const TeacherProfile = () => {
             </div>
 
             <div className="flex items-start gap-3">
-              <div className="p-2 rounded-lg bg-green-100 dark:bg-green-950">
-                <Users className="h-5 w-5 text-green-600" />
+              <div className="p-2 rounded-lg bg-secondary/10">
+                <Users className="h-5 w-5 text-secondary" />
               </div>
               <div>
                 <p className="text-sm text-muted-foreground">Class</p>
@@ -65,8 +65,8 @@ const TeacherProfile = () => {
             </div>
 
             <div className="flex items-start gap-3">
-              <div className="p-2 rounded-lg bg-purple-100 dark:bg-purple-950">
-                <BookOpen className="h-5 w-5 text-purple-600" />
+              <div className="p-2 rounded-lg bg-accent/10">
+                <BookOpen className="h-5 w-5 text-accent" />
               </div>
               <div>
                 <p className="text-sm text-muted-foreground">Subject</p>
@@ -75,8 +75,8 @@ const TeacherProfile = () => {
             </div>
 
             <div className="flex items-start gap-3">
-              <div className="p-2 rounded-lg bg-orange-100 dark:bg-orange-950">
-                <School className="h-5 w-5 text-orange-600" />
+              <div className="p-2 rounded-lg bg-muted">
+                <School className="h-5 w-5 text-muted-foreground" />
               </div>
               <div>
                 <p className="text-sm text-muted-foreground">School</p>

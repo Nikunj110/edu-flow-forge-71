@@ -1,27 +1,101 @@
-// Placeholder Redux handlers for class/subject related actions
-// Replace with actual API calls when backend is ready
+import axios from 'axios';
+import {
+  getRequest,
+  getSuccess,
+  getFailed,
+  getError,
+  getStudentsSuccess,
+  detailsSuccess,
+  getFailedTwo,
+  getSubjectsSuccess,
+  getSubDetailsSuccess,
+  getSubDetailsRequest
+} from './sclassSlice';
 
-export const getSubjectList = (adminID: string, type: string) => async (dispatch: any) => {
-  // TODO: Implement actual API call
-  console.log('getSubjectList', adminID, type);
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+
+export const getAllSclasses = (id: string, address: string) => async (dispatch: any) => {
+  dispatch(getRequest());
+
+  try {
+    const result = await axios.get(`${API_BASE_URL}/${address}List/${id}`);
+    if (result.data.message) {
+      dispatch(getFailedTwo(result.data.message));
+    } else {
+      dispatch(getSuccess(result.data));
+    }
+  } catch (error) {
+    dispatch(getError(error));
+  }
 };
 
-export const getSubjectDetails = (subjectID: string, type: string) => async (dispatch: any) => {
-  // TODO: Implement actual API call
-  console.log('getSubjectDetails', subjectID, type);
+export const getClassStudents = (id: string) => async (dispatch: any) => {
+  dispatch(getRequest());
+
+  try {
+    const result = await axios.get(`${API_BASE_URL}/Sclass/Students/${id}`);
+    if (result.data.message) {
+      dispatch(getFailedTwo(result.data.message));
+    } else {
+      dispatch(getStudentsSuccess(result.data));
+    }
+  } catch (error) {
+    dispatch(getError(error));
+  }
 };
 
-export const getClassStudents = (classID: string) => async (dispatch: any) => {
-  // TODO: Implement actual API call
-  console.log('getClassStudents', classID);
+export const getClassDetails = (id: string, address: string) => async (dispatch: any) => {
+  dispatch(getRequest());
+
+  try {
+    const result = await axios.get(`${API_BASE_URL}/${address}/${id}`);
+    if (result.data) {
+      dispatch(detailsSuccess(result.data));
+    }
+  } catch (error) {
+    dispatch(getError(error));
+  }
 };
 
-export const getAllSclasses = (adminID: string, type: string) => async (dispatch: any) => {
-  // TODO: Implement actual API call
-  console.log('getAllSclasses', adminID, type);
+export const getSubjectList = (id: string, address: string) => async (dispatch: any) => {
+  dispatch(getRequest());
+
+  try {
+    const result = await axios.get(`${API_BASE_URL}/${address}/${id}`);
+    if (result.data.message) {
+      dispatch(getFailed(result.data.message));
+    } else {
+      dispatch(getSubjectsSuccess(result.data));
+    }
+  } catch (error) {
+    dispatch(getError(error));
+  }
 };
 
-export const getTeacherFreeClassSubjects = (classID: string) => async (dispatch: any) => {
-  // TODO: Implement actual API call
-  console.log('getTeacherFreeClassSubjects', classID);
+export const getTeacherFreeClassSubjects = (id: string) => async (dispatch: any) => {
+  dispatch(getRequest());
+
+  try {
+    const result = await axios.get(`${API_BASE_URL}/FreeSubjectList/${id}`);
+    if (result.data.message) {
+      dispatch(getFailed(result.data.message));
+    } else {
+      dispatch(getSubjectsSuccess(result.data));
+    }
+  } catch (error) {
+    dispatch(getError(error));
+  }
+};
+
+export const getSubjectDetails = (id: string, address: string) => async (dispatch: any) => {
+  dispatch(getSubDetailsRequest());
+
+  try {
+    const result = await axios.get(`${API_BASE_URL}/${address}/${id}`);
+    if (result.data) {
+      dispatch(getSubDetailsSuccess(result.data));
+    }
+  } catch (error) {
+    dispatch(getError(error));
+  }
 };

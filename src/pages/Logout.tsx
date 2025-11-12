@@ -1,13 +1,13 @@
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { authLogout } from '../redux/userRelated/userSlice';
+import { authLogout } from '@/redux/userRelated/userSlice';
+import { RootState } from '@/redux/store';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { AlertTriangle, LogOut, X } from 'lucide-react';
+import { LogOut, X } from 'lucide-react';
 
 const Logout = () => {
-  const currentUser = useSelector((state: any) => state.user.currentUser);
-
+  const currentUser = useSelector((state: RootState) => state.user.currentUser);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -21,41 +21,34 @@ const Logout = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background to-primary/5 flex items-center justify-center p-4">
-      <Card className="max-w-md w-full shadow-xl border-border/50 animate-in fade-in slide-in-from-bottom duration-500">
-        <CardHeader className="text-center space-y-4 pb-4">
-          <div className="w-16 h-16 bg-destructive/10 rounded-full flex items-center justify-center mx-auto">
-            <AlertTriangle className="w-8 h-8 text-destructive" />
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-background to-muted/20 p-4">
+      <Card className="w-full max-w-md shadow-lg border-border/50">
+        <CardHeader className="text-center space-y-2">
+          <div className="mx-auto w-16 h-16 bg-destructive/10 rounded-full flex items-center justify-center mb-2">
+            <LogOut className="h-8 w-8 text-destructive" />
           </div>
-          <div className="space-y-2">
-            <CardTitle className="text-2xl">Confirm Logout</CardTitle>
-            <CardDescription className="text-base">
-              {currentUser?.name && (
-                <span className="block font-medium text-foreground mb-2">
-                  Hello, {currentUser.name}
-                </span>
-              )}
-              Are you sure you want to log out of your account?
-            </CardDescription>
-          </div>
+          <CardTitle className="text-2xl font-bold">
+            {currentUser?.name || 'User'}
+          </CardTitle>
+          <CardDescription className="text-base">
+            Are you sure you want to log out?
+          </CardDescription>
         </CardHeader>
         <CardContent className="space-y-3">
-          <Button
+          <Button 
             onClick={handleLogout}
             variant="destructive"
-            size="lg"
-            className="w-full"
+            className="w-full h-11 text-base"
           >
-            <LogOut className="w-4 h-4 mr-2" />
-            Yes, Log Out
+            <LogOut className="mr-2 h-5 w-5" />
+            Log Out
           </Button>
-          <Button
+          <Button 
             onClick={handleCancel}
             variant="outline"
-            size="lg"
-            className="w-full border-border hover:bg-muted"
+            className="w-full h-11 text-base"
           >
-            <X className="w-4 h-4 mr-2" />
+            <X className="mr-2 h-5 w-5" />
             Cancel
           </Button>
         </CardContent>

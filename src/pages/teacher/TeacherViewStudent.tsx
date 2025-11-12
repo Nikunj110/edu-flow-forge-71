@@ -171,8 +171,8 @@ const TeacherViewStudent = () => {
                                           <span
                                             className={
                                               record.status === 'Present'
-                                                ? 'text-green-600'
-                                                : 'text-red-600'
+                                                ? 'text-secondary font-medium'
+                                                : 'text-destructive font-medium'
                                             }
                                           >
                                             {record.status}

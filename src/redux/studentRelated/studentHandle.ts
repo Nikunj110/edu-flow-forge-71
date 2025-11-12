@@ -1,17 +1,57 @@
-// Placeholder Redux handlers for student related actions
-// Replace with actual API calls when backend is ready
+import axios from 'axios';
+import {
+  getRequest,
+  getSuccess,
+  getFailed,
+  getError,
+  stuffDone
+} from './studentSlice';
 
-export const getAllStudents = (adminID: string) => async (dispatch: any) => {
-  // TODO: Implement actual API call
-  console.log('getAllStudents', adminID);
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+
+export const getAllStudents = (id: string) => async (dispatch: any) => {
+  dispatch(getRequest());
+
+  try {
+    const result = await axios.get(`${API_BASE_URL}/Students/${id}`);
+    if (result.data.message) {
+      dispatch(getFailed(result.data.message));
+    } else {
+      dispatch(getSuccess(result.data));
+    }
+  } catch (error) {
+    dispatch(getError(error));
+  }
 };
 
-export const updateStudentFields = (studentID: string, fields: any, type: string) => async (dispatch: any) => {
-  // TODO: Implement actual API call
-  console.log('updateStudentFields', studentID, fields, type);
+export const updateStudentFields = (id: string, fields: any, address: string) => async (dispatch: any) => {
+  dispatch(getRequest());
+
+  try {
+    const result = await axios.put(`${API_BASE_URL}/${address}/${id}`, fields, {
+      headers: { 'Content-Type': 'application/json' },
+    });
+    if (result.data.message) {
+      dispatch(getFailed(result.data.message));
+    } else {
+      dispatch(stuffDone());
+    }
+  } catch (error) {
+    dispatch(getError(error));
+  }
 };
 
-export const removeStuff = (studentID: string, type: string) => async (dispatch: any) => {
-  // TODO: Implement actual API call
-  console.log('removeStuff', studentID, type);
+export const removeStuff = (id: string, address: string) => async (dispatch: any) => {
+  dispatch(getRequest());
+
+  try {
+    const result = await axios.put(`${API_BASE_URL}/${address}/${id}`);
+    if (result.data.message) {
+      dispatch(getFailed(result.data.message));
+    } else {
+      dispatch(stuffDone());
+    }
+  } catch (error) {
+    dispatch(getError(error));
+  }
 };
