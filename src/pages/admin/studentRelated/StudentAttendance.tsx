@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
@@ -11,6 +11,8 @@ import { CalendarIcon } from 'lucide-react';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
+import { updateStudentFields } from '@/redux/studentRelated/studentHandle';
+import { underStudentControl } from '@/redux/studentRelated/studentSlice';
 
 interface StudentAttendanceProps {
   situation?: string;
@@ -21,6 +23,7 @@ const StudentAttendance = ({ situation }: StudentAttendanceProps) => {
   const navigate = useNavigate();
   const params = useParams();
   const dispatch = useDispatch();
+  const { statestatus, response, error } = useSelector((state: any) => state.student);
 
   const [status, setStatus] = useState('Present');
   const [date, setDate] = useState<Date>(new Date());
@@ -37,16 +40,31 @@ const StudentAttendance = ({ situation }: StudentAttendanceProps) => {
       date: date.toISOString(),
     };
 
-    // TODO: Implement actual API call
-    console.log('Mark Attendance:', { studentID, fields });
-
-    toast({
-      title: 'Success',
-      description: 'Attendance marked successfully',
-    });
-
-    navigate(-1);
+    dispatch(updateStudentFields(studentID!, fields, 'StudentAttendance') as any);
   };
+
+  useEffect(() => {
+    if (statestatus === 'added') {
+      toast({
+        title: 'Success',
+        description: 'Attendance marked successfully',
+      });
+      navigate(-1);
+      dispatch(underStudentControl());
+    } else if (response) {
+      toast({
+        title: 'Error',
+        description: response,
+        variant: 'destructive',
+      });
+    } else if (error) {
+      toast({
+        title: 'Error',
+        description: 'Network Error',
+        variant: 'destructive',
+      });
+    }
+  }, [statestatus, response, error, navigate, toast, dispatch]);
 
   return (
     <div className="space-y-6">

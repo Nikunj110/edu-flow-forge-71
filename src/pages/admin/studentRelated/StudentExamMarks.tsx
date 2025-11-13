@@ -1,11 +1,13 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
+import { updateStudentFields } from '@/redux/studentRelated/studentHandle';
+import { underStudentControl } from '@/redux/studentRelated/studentSlice';
 
 interface StudentExamMarksProps {
   situation?: string;
@@ -16,6 +18,7 @@ const StudentExamMarks = ({ situation }: StudentExamMarksProps) => {
   const navigate = useNavigate();
   const params = useParams();
   const dispatch = useDispatch();
+  const { statestatus, response, error } = useSelector((state: any) => state.student);
 
   const [marks, setMarks] = useState('');
 
@@ -39,16 +42,31 @@ const StudentExamMarks = ({ situation }: StudentExamMarksProps) => {
       marksObtained: Number(marks),
     };
 
-    // TODO: Implement actual API call
-    console.log('Add Marks:', { studentID, fields });
-
-    toast({
-      title: 'Success',
-      description: 'Marks added successfully',
-    });
-
-    navigate(-1);
+    dispatch(updateStudentFields(studentID!, fields, 'UpdateExamResult') as any);
   };
+
+  useEffect(() => {
+    if (statestatus === 'added') {
+      toast({
+        title: 'Success',
+        description: 'Marks added successfully',
+      });
+      navigate(-1);
+      dispatch(underStudentControl());
+    } else if (response) {
+      toast({
+        title: 'Error',
+        description: response,
+        variant: 'destructive',
+      });
+    } else if (error) {
+      toast({
+        title: 'Error',
+        description: 'Network Error',
+        variant: 'destructive',
+      });
+    }
+  }, [statestatus, response, error, navigate, toast, dispatch]);
 
   return (
     <div className="space-y-6">

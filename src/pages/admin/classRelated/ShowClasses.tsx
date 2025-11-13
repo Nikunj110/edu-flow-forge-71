@@ -1,17 +1,30 @@
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Plus, BookOpen, Users, Trash2, Eye } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { getAllSclasses } from '@/redux/sclassRelated/sclassHandle';
+import { deleteUser } from '@/redux/userRelated/userHandle';
 
 const ShowClasses = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { sclassesList, loading } = useSelector((state: any) => state.sclass);
+  const { currentUser } = useSelector((state: any) => state.user);
 
-  // Placeholder data - replace with Redux data
-  const classes = [
-    { id: '1', name: 'Class 10A', students: 30, subjects: 8 },
-    { id: '2', name: 'Class 10B', students: 28, subjects: 8 },
-    { id: '3', name: 'Class 9A', students: 32, subjects: 7 },
-  ];
+  const adminID = currentUser._id;
+
+  useEffect(() => {
+    dispatch(getAllSclasses(adminID, 'Sclass') as any);
+  }, [adminID, dispatch]);
+
+  const classes = sclassesList.map((classItem: any) => ({
+    id: classItem._id,
+    name: classItem.sclassName,
+    students: 0, // Will be updated with actual count
+    subjects: 0, // Will be updated with actual count
+  }));
 
   return (
     <div className="space-y-6 animate-in fade-in duration-500">

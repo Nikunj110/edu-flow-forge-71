@@ -23,7 +23,19 @@ export const getAllComplains = (id: string, address: string) => async (dispatch:
   }
 };
 
-export const complainCreate = (fields: any) => async (dispatch: any) => {
-  // TODO: Implement actual API call
-  console.log('complainCreate', fields);
+export const complainCreate = (fields: any, address: string) => async (dispatch: any) => {
+  dispatch(getRequest());
+
+  try {
+    const result = await axios.post(`${API_BASE_URL}/${address}Create`, fields, {
+      headers: { 'Content-Type': 'application/json' },
+    });
+    if (result.data.message) {
+      dispatch(getFailed(result.data.message));
+    } else {
+      dispatch(getSuccess(result.data));
+    }
+  } catch (error) {
+    dispatch(getError(error));
+  }
 };

@@ -30,7 +30,15 @@ const TeacherComplain = () => {
       complaint,
     };
 
-    dispatch(complainCreate(fields) as any);
+    const date = new Date().toISOString();
+    const complaintFields = {
+      user: currentUser._id,
+      date,
+      complaint,
+      school: currentUser.school,
+    };
+
+    dispatch(complainCreate(complaintFields, 'Complain') as any);
 
     toast({
       title: 'Success',

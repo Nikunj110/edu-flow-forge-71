@@ -1,29 +1,45 @@
+import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ArrowLeft, BookOpen, Users, Plus } from 'lucide-react';
+import { getClassDetails, getClassStudents, getSubjectList } from '@/redux/sclassRelated/sclassHandle';
 
 const ClassDetails = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+  const dispatch = useDispatch();
+  const { sclassDetails, sclassStudents, subjectsList, loading } = useSelector((state: any) => state.sclass);
 
-  // Placeholder data
+  useEffect(() => {
+    if (id) {
+      dispatch(getClassDetails(id, 'Sclass') as any);
+      dispatch(getClassStudents(id) as any);
+      dispatch(getSubjectList(id, 'ClassSubjects') as any);
+    }
+  }, [id, dispatch]);
+
   const classData = {
-    name: 'Class 10A',
-    students: 30,
-    subjects: 8,
+    name: sclassDetails?.sclassName || 'Loading...',
+    students: sclassStudents?.length || 0,
+    subjects: subjectsList?.length || 0,
   };
 
-  const students = [
-    { id: '1', name: 'John Doe', rollNo: '001', attendance: '95%' },
-    { id: '2', name: 'Jane Smith', rollNo: '002', attendance: '92%' },
-  ];
+  const students = sclassStudents.map((student: any) => ({
+    id: student._id,
+    name: student.name,
+    rollNo: student.rollNum,
+    attendance: '0%', // Will be calculated
+  }));
 
-  const subjects = [
-    { id: '1', name: 'Mathematics', code: 'MATH101', teacher: 'Mr. Johnson' },
-    { id: '2', name: 'Science', code: 'SCI101', teacher: 'Mrs. Davis' },
-  ];
+  const subjects = subjectsList.map((subject: any) => ({
+    id: subject._id,
+    name: subject.subName,
+    code: subject.subCode,
+    teacher: subject.teacher?.name || 'Unassigned',
+  }));
 
   return (
     <div className="space-y-6 animate-in fade-in duration-500">

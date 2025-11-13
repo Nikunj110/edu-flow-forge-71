@@ -1,5 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { addStuff } from '@/redux/userRelated/userHandle';
+import { underControl } from '@/redux/userRelated/userSlice';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -9,10 +12,15 @@ import { toast } from 'sonner';
 
 const AddClass = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { status, response, error, currentUser } = useSelector((state: any) => state.user);
   const [className, setClassName] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const adminID = currentUser._id;
+  const address = 'Sclass';
+
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!className.trim()) {
@@ -21,12 +29,23 @@ const AddClass = () => {
     }
 
     setLoading(true);
-    // Simulate API call - replace with actual Redux dispatch
-    setTimeout(() => {
+    const fields = { sclassName: className, adminID };
+    dispatch(addStuff(fields, address) as any);
+  };
+
+  useEffect(() => {
+    if (status === 'added') {
       toast.success('Class created successfully!');
       navigate('/Admin/classes');
-    }, 1000);
-  };
+      dispatch(underControl());
+    } else if (status === 'failed') {
+      toast.error(response);
+      setLoading(false);
+    } else if (status === 'error') {
+      toast.error('Network Error');
+      setLoading(false);
+    }
+  }, [status, navigate, response, dispatch]);
 
   return (
     <div className="max-w-2xl mx-auto space-y-6 animate-in fade-in duration-500">
